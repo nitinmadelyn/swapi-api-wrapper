@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  # Any other services here
+  mongo:
+    image: mongo:6.0.7
+    restart: always
+    volumes:
+      - .:/home/data/db
+    networks:
+      - backend
+  api:
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+        - PORT=3000
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/swapi-wrapper
+      - JWT_KEY='IlOvEsTaRwArS' # this can be save to kubernetes using `kubectl create secret generic` command when deploy to production
+    restart: always
+    command: npm run start:dev
+    depends_on:
+      - mongo
+    networks:
+      - backend
+networks:
+  backend:

@@ -1,0 +1,9 @@
+http:
+  interface: '::'
+  port: 3000
+log:
+  level: info
+jwt:
+  expires_in: '24h'
+swapi:
+  base_url: 'https://swapi.dev/api/'
